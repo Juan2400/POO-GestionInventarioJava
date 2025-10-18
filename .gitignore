@@ -1,0 +1,25 @@
+# Archivos de configuración del entorno
+.env
+*.bak
+*.bacpac
+
+# Archivos compilados
+*.class
+*.jar
+*.log
+
+# Carpetas de compilación o salida
+/build/
+/dist/
+/out/
+/nbproject/private/
+/.idea/
+.idea/
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Archivos temporales
+*.tmp
+*.old
+*.backup

@@ -1,0 +1,276 @@
+USE [master]
+GO
+/****** Object:  Database [BD_GestionInventario2]    Script Date: 18/10/2025 1:09:10 ******/
+CREATE DATABASE [BD_GestionInventario2]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'BD_GestionInventario2', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\DATA\BD_GestionInventario2.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'BD_GestionInventario2_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\DATA\BD_GestionInventario2_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT, LEDGER = OFF
+GO
+ALTER DATABASE [BD_GestionInventario2] SET COMPATIBILITY_LEVEL = 160
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [BD_GestionInventario2].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [BD_GestionInventario2] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [BD_GestionInventario2] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [BD_GestionInventario2] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [BD_GestionInventario2] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [BD_GestionInventario2] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [BD_GestionInventario2] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [BD_GestionInventario2] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [BD_GestionInventario2] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [BD_GestionInventario2] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [BD_GestionInventario2] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [BD_GestionInventario2] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [BD_GestionInventario2] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [BD_GestionInventario2] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [BD_GestionInventario2] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [BD_GestionInventario2] SET  ENABLE_BROKER 
+GO
+ALTER DATABASE [BD_GestionInventario2] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [BD_GestionInventario2] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [BD_GestionInventario2] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [BD_GestionInventario2] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [BD_GestionInventario2] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [BD_GestionInventario2] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [BD_GestionInventario2] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [BD_GestionInventario2] SET RECOVERY FULL 
+GO
+ALTER DATABASE [BD_GestionInventario2] SET  MULTI_USER 
+GO
+ALTER DATABASE [BD_GestionInventario2] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [BD_GestionInventario2] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [BD_GestionInventario2] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [BD_GestionInventario2] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [BD_GestionInventario2] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [BD_GestionInventario2] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+EXEC sys.sp_db_vardecimal_storage_format N'BD_GestionInventario2', N'ON'
+GO
+ALTER DATABASE [BD_GestionInventario2] SET QUERY_STORE = ON
+GO
+ALTER DATABASE [BD_GestionInventario2] SET QUERY_STORE (OPERATION_MODE = READ_WRITE, CLEANUP_POLICY = (STALE_QUERY_THRESHOLD_DAYS = 30), DATA_FLUSH_INTERVAL_SECONDS = 900, INTERVAL_LENGTH_MINUTES = 60, MAX_STORAGE_SIZE_MB = 1000, QUERY_CAPTURE_MODE = AUTO, SIZE_BASED_CLEANUP_MODE = AUTO, MAX_PLANS_PER_QUERY = 200, WAIT_STATS_CAPTURE_MODE = ON)
+GO
+USE [BD_GestionInventario2]
+GO
+/****** Object:  Table [dbo].[Categoria]    Script Date: 18/10/2025 1:09:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Categoria](
+	[IdCategoria] [int] IDENTITY(1,1) NOT NULL,
+	[NombreCategoria] [varchar](50) NOT NULL,
+	[Descripcion] [varchar](250) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[IdCategoria] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[EntradaInsumo]    Script Date: 18/10/2025 1:09:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[EntradaInsumo](
+	[IdEntrada] [int] IDENTITY(1,1) NOT NULL,
+	[NumeroFactura] [varchar](15) NOT NULL,
+	[FechaEntrada] [datetime] NULL,
+	[Cantidad] [int] NOT NULL,
+	[Importe] [decimal](8, 2) NOT NULL,
+	[IdUsuario] [int] NOT NULL,
+	[IdInsumo] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[IdEntrada] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Insumo]    Script Date: 18/10/2025 1:09:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Insumo](
+	[IdInsumo] [int] IDENTITY(1,1) NOT NULL,
+	[NombreInsumo] [varchar](50) NOT NULL,
+	[IdUnidadMedida] [int] NOT NULL,
+	[IdCategoria] [int] NOT NULL,
+	[IdProveedor] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[IdInsumo] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Inventario]    Script Date: 18/10/2025 1:09:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Inventario](
+	[IdInventario] [int] IDENTITY(1,1) NOT NULL,
+	[Entrada] [int] NOT NULL,
+	[Salida] [int] NOT NULL,
+	[Stock]  AS ([Entrada]-[Salida]),
+	[IdInsumo] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[IdInventario] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Proveedor]    Script Date: 18/10/2025 1:09:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Proveedor](
+	[IdProveedor] [int] IDENTITY(1,1) NOT NULL,
+	[NombreProveedor] [varchar](50) NOT NULL,
+	[Direccion] [varchar](50) NOT NULL,
+	[Ruc] [char](11) NOT NULL,
+	[Telefono] [varchar](15) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[IdProveedor] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Rol]    Script Date: 18/10/2025 1:09:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Rol](
+	[IdRol] [int] IDENTITY(1,1) NOT NULL,
+	[NombreRol] [varchar](50) NOT NULL,
+	[DescripcionRol] [varchar](250) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[IdRol] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[SalidaInsumo]    Script Date: 18/10/2025 1:09:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[SalidaInsumo](
+	[IdSalida] [int] IDENTITY(1,1) NOT NULL,
+	[FechaSalida] [datetime] NULL,
+	[Cantidad] [int] NOT NULL,
+	[IdUsuario] [int] NOT NULL,
+	[IdInsumo] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[IdSalida] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[UnidadMedida]    Script Date: 18/10/2025 1:09:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[UnidadMedida](
+	[IdUnidadMedida] [int] IDENTITY(1,1) NOT NULL,
+	[NombreUnidadMedida] [varchar](50) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[IdUnidadMedida] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Usuario]    Script Date: 18/10/2025 1:09:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Usuario](
+	[IdUsuario] [int] IDENTITY(1,1) NOT NULL,
+	[Nombre] [varchar](50) NOT NULL,
+	[Apellido] [varchar](50) NOT NULL,
+	[Dni] [char](8) NOT NULL,
+	[NombreUsuario] [varchar](50) NOT NULL,
+	[Contrasenia] [varchar](100) NULL,
+	[Email] [varchar](256) NULL,
+	[IdRol] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[IdUsuario] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[EntradaInsumo] ADD  DEFAULT (getdate()) FOR [FechaEntrada]
+GO
+ALTER TABLE [dbo].[Inventario] ADD  DEFAULT ((0)) FOR [Entrada]
+GO
+ALTER TABLE [dbo].[Inventario] ADD  DEFAULT ((0)) FOR [Salida]
+GO
+ALTER TABLE [dbo].[SalidaInsumo] ADD  DEFAULT (getdate()) FOR [FechaSalida]
+GO
+ALTER TABLE [dbo].[EntradaInsumo]  WITH CHECK ADD FOREIGN KEY([IdInsumo])
+REFERENCES [dbo].[Insumo] ([IdInsumo])
+GO
+ALTER TABLE [dbo].[EntradaInsumo]  WITH CHECK ADD FOREIGN KEY([IdUsuario])
+REFERENCES [dbo].[Usuario] ([IdUsuario])
+GO
+ALTER TABLE [dbo].[Insumo]  WITH CHECK ADD FOREIGN KEY([IdCategoria])
+REFERENCES [dbo].[Categoria] ([IdCategoria])
+GO
+ALTER TABLE [dbo].[Insumo]  WITH CHECK ADD FOREIGN KEY([IdProveedor])
+REFERENCES [dbo].[Proveedor] ([IdProveedor])
+GO
+ALTER TABLE [dbo].[Insumo]  WITH CHECK ADD FOREIGN KEY([IdUnidadMedida])
+REFERENCES [dbo].[UnidadMedida] ([IdUnidadMedida])
+GO
+ALTER TABLE [dbo].[Inventario]  WITH CHECK ADD FOREIGN KEY([IdInsumo])
+REFERENCES [dbo].[Insumo] ([IdInsumo])
+GO
+ALTER TABLE [dbo].[SalidaInsumo]  WITH CHECK ADD FOREIGN KEY([IdInsumo])
+REFERENCES [dbo].[Insumo] ([IdInsumo])
+GO
+ALTER TABLE [dbo].[SalidaInsumo]  WITH CHECK ADD FOREIGN KEY([IdUsuario])
+REFERENCES [dbo].[Usuario] ([IdUsuario])
+GO
+ALTER TABLE [dbo].[Usuario]  WITH CHECK ADD FOREIGN KEY([IdRol])
+REFERENCES [dbo].[Rol] ([IdRol])
+GO
+USE [master]
+GO
+ALTER DATABASE [BD_GestionInventario2] SET  READ_WRITE 
+GO
